@@ -28,13 +28,26 @@ app.use('/routes', function(req, res, next){
 ////////////ROUTES//////////////
 ////////////////////////////////
 
-//create
+// CREATE
 
-//index
+//INDEX
 
-//show
+//SHOW
 
-//update
 
-//delete
+
+//UPDATE
+
+
+
+
+//DELETE
+
+
+
+const port = process.env.PORT;
+app.listen(port, () => {
+  console.log(`Started on port ${port}`);
+});
+
 module.exports = {app};
