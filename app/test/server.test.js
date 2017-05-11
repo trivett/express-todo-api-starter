@@ -41,4 +41,49 @@ describe('POST /todos', () =>{
         }).catch((e) => done(e));
       })
   });
+  it("should not creat an invalid new todo", (done) => {
+    let text = 'e';
+    request(app)
+      .post('/todos')
+      .send({text})
+      .expect(400)
+      .expect('Content-Type', /json/)
+      .expect((res) => {
+        expect(res.body.errors.text.message).toBe("Path `text` (`e`) is shorter than the minimum allowed length (4).");
+      })
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        Todo.find().then((todos) => {
+          expect(todos.length).toBe(todoSeeds.length);
+          done();
+        }).catch((e) => done(e));
+      })
+  });
+});
+
+describe('GET /todos', () =>{
+  it("should return todos los todos in the db", (done) => {
+    request(app)
+      .get("/todos")
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .expect((res) =>{
+        expect(res.body.todos.length).toBe(todoSeeds.length);
+      })
+      .end(done);
+  });
+});
+
+describe("GET /todos/:id", () => {
+  it ("should retrieve one todo given a correct id", (done) =>{
+    //test here
+  });
+  it ("should 404 on an invalid mongo id", (done) =>{
+    //test here
+  });
+  it ("should 404 on an valid id that is not in the db", (done) =>{
+    //test here
+  });
 });
