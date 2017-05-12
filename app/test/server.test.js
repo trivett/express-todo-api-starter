@@ -78,12 +78,26 @@ describe('GET /todos', () =>{
 
 describe("GET /todos/:id", () => {
   it ("should retrieve one todo given a correct id", (done) =>{
-    //test here
+    // make sure a real todo comes back. just one
+    request(app)
+      .get(`/todos/${todoSeeds[0]._id.toHexString()}`)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.todo.text).toBe(todoSeeds[0].text);
+      })
+      .end(done);
   });
   it ("should 404 on an invalid mongo id", (done) =>{
-    //test here
+    request(app)
+      .get(`/todos/bullshit`)
+      .expect(404)
+      .end(done);
+    
   });
   it ("should 404 on an valid id that is not in the db", (done) =>{
-    //test here
+    request(app)
+      .get(`/todos/${todoSeeds[0]._id.toHexString().replace("5", "6")}`)
+      .expect(404)
+      .end(done);
   });
 });
